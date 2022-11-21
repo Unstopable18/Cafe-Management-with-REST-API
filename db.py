@@ -1,0 +1,10 @@
+items={
+    'a7277c6a1c774b08b1661c7785e7c989':{
+        'name':'Mojito',
+        'price':160
+    },
+    '96e51ad69e6c4fc1a3943f2a7970fc39':{
+        'name':'Momos',
+        'price':60
+    }
+}
