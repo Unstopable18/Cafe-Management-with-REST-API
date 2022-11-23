@@ -1,6 +1,6 @@
 from flask import request
 import uuid
-from db import items
+from db import ItemDatabase
 from flask.views import MethodView
 from flask_smorest import Blueprint,abort
 from schema import ItemSchema, ItemGetSchema,SuccessMessageSchema,ItemOptionalQuerySchema,ItemQuerySchema
@@ -10,23 +10,28 @@ blp=Blueprint("items",__name__,description="Operations GET, PUT, POST, DELETE")
 @blp.route("/item")
 class Item(MethodView):
 
+    def __init__(self):
+        self.db=ItemDatabase()
+
     @blp.response(200,ItemGetSchema(many=True)) 
     @blp.arguments(ItemOptionalQuerySchema, location="query")
     def get(self,args):
         id= args.get("id")
         if id is None:
-            return items
-        for item in items:
-            if item["id"]==id:
-                return [item]
-        abort(400, message="Id not found")
+            return self.db.get_items()
+        # for item in self.db.get_items():
+        #     if item["id"]==id:
+        #         return [item]
+        # abort(400, message="Id not found")
+        else:
+            return self.db.get_item(id)
 
     @blp.arguments(ItemSchema)
     @blp.response(200,SuccessMessageSchema)
     @blp.arguments(ItemQuerySchema, location="query")
     def put(self, request_data,args):
         id= args.get("id")
-        for item in items:
+        for item in self.db.get_items():
             if item["id"]==id:
                 item["item"]["name"]=request_data["name"]
                 item["item"]["price"]=request_data["price"]
@@ -51,7 +56,7 @@ class Item(MethodView):
     @blp.response(200,SuccessMessageSchema)
     def delete(self,args):
         id= args.get("id")
-        for item in items:
+        for item in self.db.get_items():
             if item["id"]==id:
                 items.remove(item)
                 return {"message":"Item deleted succesfully"},200

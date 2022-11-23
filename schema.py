@@ -1,12 +1,15 @@
 from marshmallow import Schema, fields
 
 class ItemSchema(Schema):
-    name=fields.Str(required=True)
-    price=fields.Int(required=True)
+#     name=fields.Str(required=True)
+#     price=fields.Int(required=True)
+    pass
 
 class ItemGetSchema(Schema):
     id=fields.Str(dump_only=True)
-    item=fields.Nested(ItemSchema)
+    name=fields.Str(dump_only=True)
+    price=fields.Int(dump_only=True)
+    #item=fields.Nested(ItemSchema)
 
 class SuccessMessageSchema(Schema):
     message=fields.Str(dump_only=True)
