@@ -23,19 +23,31 @@ class ItemDatabase:
         self.cursor.execute(query)
         for row in self.cursor.fetchall():
             item_dict={}
-            item_dict['id']=row[0]
-            item_dict['name']=row[1]
-            item_dict['price']=row[2]
+            item_dict['id'],item_dict['name'],item_dict['price']=row
             return [item_dict]
 
     def add_item(self, id, body_object):
-        pass
+        query=f"insert into items(id,name,price) values('{id}','{body_object['name']}',{body_object['price']})"
+        self.cursor.execute(query)
+        self.conn.commit()
 
     def put_item(self, id, body_object):
-        pass
+        query=f"update items set name='{body_object['name']}',price={body_object['price']} where id='{id}'"
+        self.cursor.execute(query)
+        if self.cursor.rowcount==0:
+            return False
+        else:
+            self.conn.commit()
+            return True
 
     def delete_item(self, item_id):
-        pass
+        query=f"delete from items where id='{item_id}'"
+        self.cursor.execute(query)
+        if self.cursor.rowcount==0:
+            return False
+        else:
+            self.conn.commit()
+            return True
 
 # db=ItemDatabase()
 # db.get_items()

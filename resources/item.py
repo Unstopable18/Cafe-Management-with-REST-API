@@ -24,40 +24,34 @@ class Item(MethodView):
         #         return [item]
         # abort(400, message="Id not found")
         else:
-            return self.db.get_item(id)
+            result=self.db.get_item(id)
+            if result is None:
+                abort(400, message="Id not found")
+            return result
 
     @blp.arguments(ItemSchema)
     @blp.response(200,SuccessMessageSchema)
     @blp.arguments(ItemQuerySchema, location="query")
     def put(self, request_data,args):
         id= args.get("id")
-        for item in self.db.get_items():
-            if item["id"]==id:
-                item["item"]["name"]=request_data["name"]
-                item["item"]["price"]=request_data["price"]
-                return {"message":"Item updated succesfully"},200
-        abort(400, message="Id not found")
+        if self.db.put_item(id,request_data):
+            return {"message":"Item updated succesfully"},200
+        else:
+            abort(400, message="Id not found")
 
 
     @blp.arguments(ItemSchema)
     @blp.response(201,SuccessMessageSchema)
     def post(self,request_data):
-        item={
-            "id":uuid.uuid4().hex,
-            "item":{
-                "name":request_data["name"],
-                "price":request_data["price"]
-            }
-        }
-        items.append(item)
+        id = uuid.uuid4().hex
+        self.db.add_item(id,request_data)
         return {"message":"Item added succesfully"},201
 
     @blp.arguments(ItemQuerySchema, location="query")
     @blp.response(200,SuccessMessageSchema)
     def delete(self,args):
         id= args.get("id")
-        for item in self.db.get_items():
-            if item["id"]==id:
-                items.remove(item)
-                return {"message":"Item deleted succesfully"},200
-        abort(400, message="Id not found")
+        if self.db.delete_item(id):
+            return {"message":"Item deleted succesfully"},200
+        else:
+            abort(400, message="Id not found")
