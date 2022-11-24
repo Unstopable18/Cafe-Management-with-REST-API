@@ -1,5 +1,6 @@
 from flask import Flask
 from resources.item import blp as ItemBluePrint
+from resources.user import blp as UserBluePrint
 from flask_smorest import Api
 
 app = Flask(__name__)
@@ -12,3 +13,4 @@ app.config["OPENAPI_SWAGGER_UI_PATH"]="/swagger-ui"
 app.config["OPENAPI_SWAGGER_UI_URL"]="https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 api=Api(app)
 api.register_blueprint(ItemBluePrint)
+api.register_blueprint(UserBluePrint)

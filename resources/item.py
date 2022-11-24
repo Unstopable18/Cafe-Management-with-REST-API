@@ -1,6 +1,5 @@
-from flask import request
 import uuid
-from db import ItemDatabase
+from db.item import ItemDatabase
 from flask.views import MethodView
 from flask_smorest import Blueprint,abort
 from schema import ItemSchema, ItemGetSchema,SuccessMessageSchema,ItemOptionalQuerySchema,ItemQuerySchema
@@ -19,10 +18,6 @@ class Item(MethodView):
         id= args.get("id")
         if id is None:
             return self.db.get_items()
-        # for item in self.db.get_items():
-        #     if item["id"]==id:
-        #         return [item]
-        # abort(400, message="Id not found")
         else:
             result=self.db.get_item(id)
             if result is None:

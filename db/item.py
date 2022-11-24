@@ -11,9 +11,7 @@ class ItemDatabase:
         self.cursor.execute(query)
         for row in self.cursor.fetchall():
             item_dict={}
-            item_dict['id']=row[0]
-            item_dict['name']=row[1]
-            item_dict['price']=row[2]
+            item_dict['id'],item_dict['name'],item_dict['price']=row
             result.append(item_dict)
 
         return result
