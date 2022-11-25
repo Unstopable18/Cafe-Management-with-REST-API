@@ -18,7 +18,7 @@ class login(MethodView):
     def post(self,args):
         username= args.get("username")
         password= hashlib.sha256(args.get("password").encode('utf-8')).hexdigest()
-        return create_access_token(identity=)
+        return create_access_token(identity='Vaihnavi')
 
 @blp.route("/user")
 class user(MethodView):
