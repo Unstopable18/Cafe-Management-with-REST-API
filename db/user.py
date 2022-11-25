@@ -13,7 +13,6 @@ class UserDatabase:
             user_dict={}
             user_dict['id'],user_dict['username'],user_dict['password']=row
             result.append(user_dict)
-
         return result
 
     def get_user(self, user_id):
@@ -26,9 +25,16 @@ class UserDatabase:
             
 
     def add_user(self, username,password):
-        query=f"insert into users(username,password) values('{username}','{password}')"
-        self.cursor.execute(query)
-        self.conn.commit()
+        try:
+            query=f"insert into users(username,password) values('{username}','{password}')"
+            self.cursor.execute(query)
+            if self.cursor.rowcount==0:
+                return False
+            else:
+                self.conn.commit()
+                return True
+        except:
+            return False
 
     def put_user(self, id, username,password):
         query=f"update users set username='{username}',password='{password}' where id='{id}'"
@@ -48,8 +54,8 @@ class UserDatabase:
             self.conn.commit()
             return True
 
-db=UserDatabase()
-db.get_user(1)
+# db=UserDatabase()
+# db.get_user(1)
 
 
 
