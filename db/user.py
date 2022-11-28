@@ -54,6 +54,12 @@ class UserDatabase:
             self.conn.commit()
             return True
 
+    def verify_user(self, username,password):
+        query=f"select * from users where username='{username}' and password='{password}'"
+        self.cursor.execute(query)
+        result=self.cursor.fetchone()
+        if result is not None:
+            return result[0]
 # db=UserDatabase()
 # db.get_user(1)
 

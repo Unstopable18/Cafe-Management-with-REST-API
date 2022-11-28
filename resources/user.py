@@ -3,22 +3,36 @@ from flask.views import MethodView
 from flask_smorest import Blueprint,abort
 from schema import UserSchema, UserGetSchema,SuccessMessageSchema,UserOptionalQuerySchema,UserQuerySchema,UserOptionSchema
 import hashlib
-from flask_jwt_extended import create_access_token 
+from flask_jwt_extended import create_access_token, get_jwt, jwt_required 
+from blocklist import BLOCKLIST
 
 blp=Blueprint("users",__name__,description="Operations GET, PUT, POST, DELETE")
 
 @blp.route("/login")
-class login(MethodView):
+class Userlogin(MethodView):
 
     def __init__(self):
         self.db=UserDatabase()
 
     @blp.arguments(UserSchema, location="query")
-    @blp.response(201,SuccessMessageSchema)
     def post(self,args):
         username= args.get("username")
         password= hashlib.sha256(args.get("password").encode('utf-8')).hexdigest()
-        return create_access_token(identity='Vaihnavi')
+        user_id=self.db.verify_user(username,password)
+        if user_id:
+            return {
+                "access_token":create_access_token(identity=user_id)
+            }
+        abort(400, message="User not found")
+
+@blp.route("/logout")
+class Userlogout(MethodView):
+
+    @jwt_required()
+    def post(self):
+        jti=get_jwt()["jti"]
+        BLOCKLIST.add(jti)
+        return {"message":"Logged-out Successfully"}
 
 @blp.route("/user")
 class user(MethodView):

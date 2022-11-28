@@ -1,4 +1,5 @@
 import uuid
+from flask_jwt_extended import jwt_required
 from db.item import ItemDatabase
 from flask.views import MethodView
 from flask_smorest import Blueprint,abort
@@ -12,6 +13,7 @@ class Item(MethodView):
     def __init__(self):
         self.db=ItemDatabase()
 
+    @jwt_required()
     @blp.response(200,ItemGetSchema(many=True)) 
     @blp.arguments(ItemOptionalQuerySchema, location="query")
     def get(self,args):
@@ -24,6 +26,7 @@ class Item(MethodView):
                 abort(400, message="Id not found")
             return result
 
+    @jwt_required()
     @blp.arguments(ItemSchema)
     @blp.response(200,SuccessMessageSchema)
     @blp.arguments(ItemQuerySchema, location="query")
@@ -34,7 +37,7 @@ class Item(MethodView):
         else:
             abort(400, message="Id not found")
 
-
+    @jwt_required()
     @blp.arguments(ItemSchema)
     @blp.response(201,SuccessMessageSchema)
     def post(self,request_data):
@@ -42,6 +45,7 @@ class Item(MethodView):
         self.db.add_item(id,request_data)
         return {"message":"Item added succesfully"},201
 
+    @jwt_required()
     @blp.arguments(ItemQuerySchema, location="query")
     @blp.response(200,SuccessMessageSchema)
     def delete(self,args):

@@ -28,13 +28,13 @@ class ItemSchema(Schema):
     price=fields.Int(required=True)
 
 class ItemGetSchema(Schema):
-    id=fields.Int(dump_only=True)
+    id=fields.Str(dump_only=True)
     name=fields.Str(dump_only=True)
     price=fields.Int(dump_only=True)
 
 class ItemQuerySchema(Schema):
-    id=fields.Int(required=True)
+    id=fields.Str(required=True)
 
 class ItemOptionalQuerySchema(Schema):
-    id=fields.Int(required=False)
+    id=fields.Str(required=False)
 
