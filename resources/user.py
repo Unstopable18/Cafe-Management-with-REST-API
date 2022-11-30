@@ -16,6 +16,7 @@ class Userlogin(MethodView):
 
     @blp.arguments(UserSchema, location="query")
     def post(self,args):
+        print(args)
         username= args.get("username")
         password= hashlib.sha256(args.get("password").encode('utf-8')).hexdigest()
         user_id=self.db.verify_user(username,password)

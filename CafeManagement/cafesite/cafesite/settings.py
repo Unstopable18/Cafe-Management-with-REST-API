@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#admin authentication credentials
+#username: vaishnavi password:8806812990
 
 # Application definition
 
@@ -37,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cafeManagement'
+    'cafeManagement',
+    'crispy_forms'
 ]
+
+CRIPSY_TEMPLATE_PACK='bootstrape5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

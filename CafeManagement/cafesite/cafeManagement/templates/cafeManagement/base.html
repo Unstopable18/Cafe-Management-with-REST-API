@@ -29,14 +29,16 @@
                     popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system,
                     extensive prebuilt components, and powerful JavaScript plugins.</p>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <button type="button" class="btn btn-success btn-lg px-4 gap-3" onclick="">LOG IN</button>
-                    <button type="button" class="btn btn-primary btn-lg px-4">SIGN UP</button>
+                    <button type="button" class="btn btn-success btn-lg px-4 gap-3"
+                        onclick="window.location='/account/login'">ACCOUNT LOG IN</button>
+                    <button type="button" class="btn btn-primary btn-lg px-4"
+                        onclick="window.location='/account/form'">CREATE ACCOUNT</button>
                 </div>
             </div>
             {% block content %}
             {% endblock content %}
         </div>
-        <p class="mt-5 mb-3 text-muted text-center">© 2017–2022</p>
+        <p class=" mt-5 mb-3 text-muted text-center">© 2017–2022</p>
     </div>
     <span class="badge rounded-pill text-bg-primary">Primary</span>
     <span class="badge rounded-pill text-bg-secondary">Secondary</span>

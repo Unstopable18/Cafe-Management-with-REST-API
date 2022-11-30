@@ -1,11 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from .forms import AccountForm
+from .models import Account
+import requests
 
-# Create your views here.
+
+
+
+def acIndex(request):
+    return render(request,"cafeManagement/base.html")
+
+def acLogout(request):
+    return render(request,"/account/login")
+
 def acLogin(request):
-    return render(request,"cafeManagement/login.html")
+   return render(request,"cafeManagement/login.html")
 
 def acForm(request):
-    return render(request,"cafeManagement/form.html")
+    if request.method == "GET":
+        form = AccountForm()  
+        return render(request,"cafeManagement/form.html",{"form":form})
+    else:
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect("cafeManagement/list.html")
 
 def acView(request):
     return render(request,"cafeManagement/view.html")
@@ -17,4 +35,5 @@ def acDelete(request):
     return render(request,"cafeManagement/delete.html")
 
 def acList(request):
-    return render(request,"cafeManagement/list.html")
+    response=requests.get("http://127.0.0.1:5000/user").json()
+    return render(request,"cafeManagement/list.html",{'response':response})

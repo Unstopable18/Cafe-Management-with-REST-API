@@ -4,6 +4,9 @@ from django.db import models
 class AccountType(models.Model):
     acType=models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.acType
+
 class Account(models.Model):
     acno=models.PositiveBigIntegerField()
     name=models.CharField(max_length=200)
