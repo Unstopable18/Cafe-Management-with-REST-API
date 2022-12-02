@@ -14,11 +14,11 @@ class Userlogin(MethodView):
     def __init__(self):
         self.db=UserDatabase()
 
-    @blp.arguments(UserSchema, location="query")
-    def post(self,args):
-        print(args)
-        username= args.get("username")
-        password= hashlib.sha256(args.get("password").encode('utf-8')).hexdigest()
+    @blp.arguments(UserSchema)
+    def post(self,request_data):
+        print("------------------- request data from user.py",type(request_data))
+        username= request_data["username"]
+        password= hashlib.sha256(request_data["password"].encode('utf-8')).hexdigest()
         user_id=self.db.verify_user(username,password)
         if user_id:
             return {
